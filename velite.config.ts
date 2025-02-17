@@ -7,7 +7,7 @@ const blogs = defineCollection({
     title: s.string().max(120),
     slug: s.path(),
     excerpt: s.excerpt(),
-    content: s.markdown(),
+    content: s.mdx(),
     toc: s.toc(),
     metadata: s.metadata(),
   }),
@@ -27,4 +27,7 @@ const blogsMeta = defineCollection({
 export default defineConfig({
   collections: { blogs, blogsMeta },
   markdown: {},
+  output: {
+    data: "./src/content",
+  },
 })
