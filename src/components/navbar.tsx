@@ -29,7 +29,7 @@ import {
 } from "next-themes"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FC, useId, useState } from "react"
+import { FC, useEffect, useId, useState } from "react"
 
 const doesPathMatchHref = (pathname: string, href: string): boolean => {
   const cleanedPathname = pathname.split(/[?#]/)[0]
@@ -266,6 +266,13 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 function ThemeToggle() {
   const id = useId()
   const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+      setTheme(mediaQuery.matches ? "dark" : "light")
+    }
+  }, [theme, setTheme])
 
   return (
     <>
