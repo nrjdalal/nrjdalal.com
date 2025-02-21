@@ -15,6 +15,7 @@ import {
   RiBrushAiLine,
   RiCodeAiFill,
   RiCodeAiLine,
+  RiContrast2Fill,
   RiGithubFill,
   RiLinkedinBoxFill,
   RiMenu4Fill,
@@ -29,7 +30,7 @@ import {
 } from "next-themes"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FC, useEffect, useId, useState } from "react"
+import { FC, useId, useState } from "react"
 
 const doesPathMatchHref = (pathname: string, href: string): boolean => {
   const cleanedPathname = pathname.split(/[?#]/)[0]
@@ -263,16 +264,24 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }
 
-function ThemeToggle() {
+export function ThemeToggle() {
   const id = useId()
   const { theme, setTheme } = useTheme()
+  const [system, setSystem] = useState(false)
 
-  useEffect(() => {
+  const smartToggle = () => {
+    /* The smart toggle by @nrjdalal */
     if (theme === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
-      setTheme(mediaQuery.matches ? "dark" : "light")
+      const prefersDarkScheme = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches
+      setTheme(prefersDarkScheme ? "light" : "dark")
+      setSystem(false)
+    } else {
+      setTheme("system")
+      setSystem(!system)
     }
-  }, [theme, setTheme])
+  }
 
   return (
     <>
@@ -281,8 +290,8 @@ function ThemeToggle() {
         type="checkbox"
         name="theme-toggle"
         className="peer sr-only"
-        checked={theme === "dark"}
-        onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+        checked={theme === "dark" || system}
+        onChange={smartToggle}
         aria-label="Toggle dark mode"
       />
       <label
@@ -290,8 +299,18 @@ function ThemeToggle() {
         className="hover:bg-border/50 hover:text-foreground text-foreground lg:text-muted-foreground flex aspect-square h-full cursor-pointer items-center justify-center border-t lg:border-0"
         aria-hidden="true"
       >
-        <RiSunFill className="size-4 dark:hidden" aria-hidden="true" />
-        <RiMoonFill className="hidden size-4 dark:block" aria-hidden="true" />
+        {system ? (
+          <RiContrast2Fill size={20} aria-hidden="true" />
+        ) : (
+          <>
+            <RiSunFill className="dark:hidden" size={20} aria-hidden="true" />
+            <RiMoonFill
+              className="hidden dark:block"
+              size={20}
+              aria-hidden="true"
+            />
+          </>
+        )}
         <span className="sr-only">Switch to light / dark version</span>
       </label>
     </>
