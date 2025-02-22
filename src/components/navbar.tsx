@@ -1,5 +1,6 @@
 "use client"
 
+import { ThemeToggle } from "@/components/nui/theme-toggle"
 import {
   Drawer,
   DrawerContent,
@@ -15,22 +16,14 @@ import {
   RiBrushAiLine,
   RiCodeAiFill,
   RiCodeAiLine,
-  RiContrast2Fill,
   RiGithubFill,
   RiLinkedinBoxFill,
   RiMenu4Fill,
-  RiMoonFill,
-  RiSunFill,
   RiTwitterXFill,
 } from "@remixicon/react"
-import {
-  ThemeProvider as NextThemesProvider,
-  useTheme,
-  type ThemeProviderProps,
-} from "next-themes"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FC, useId, useState } from "react"
+import { FC, useState } from "react"
 
 const doesPathMatchHref = (pathname: string, href: string): boolean => {
   const cleanedPathname = pathname.split(/[?#]/)[0]
@@ -207,7 +200,7 @@ const NavigationLinks: FC<NavigationLinksProps> = ({
   )
 }
 
-const Component: FC = () => {
+export default function Navbar() {
   const pathname = usePathname()
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
 
@@ -255,64 +248,5 @@ const Component: FC = () => {
         pathname={pathname}
       />
     </div>
-  )
-}
-
-export default Component
-
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
-}
-
-export function ThemeToggle() {
-  const id = useId()
-  const { theme, setTheme } = useTheme()
-  const [system, setSystem] = useState(false)
-
-  const smartToggle = () => {
-    /* The smart toggle by @nrjdalal */
-    if (theme === "system") {
-      const prefersDarkScheme = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches
-      setTheme(prefersDarkScheme ? "light" : "dark")
-      setSystem(false)
-    } else {
-      setTheme("system")
-      setSystem(true)
-    }
-  }
-
-  return (
-    <>
-      <input
-        id={id}
-        type="checkbox"
-        name="theme-toggle"
-        className="peer sr-only"
-        checked={system}
-        onChange={smartToggle}
-        aria-label="Toggle dark mode"
-      />
-      <label
-        htmlFor={id}
-        className="hover:bg-border/50 hover:text-foreground text-foreground lg:text-muted-foreground flex aspect-square h-full cursor-pointer items-center justify-center border-t lg:border-0"
-        aria-hidden="true"
-      >
-        {system ? (
-          <RiContrast2Fill size={20} aria-hidden="true" />
-        ) : (
-          <>
-            <RiSunFill className="dark:hidden" size={20} aria-hidden="true" />
-            <RiMoonFill
-              className="hidden dark:block"
-              size={20}
-              aria-hidden="true"
-            />
-          </>
-        )}
-        <span className="sr-only">Switch to light/dark version</span>
-      </label>
-    </>
   )
 }
