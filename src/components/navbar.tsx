@@ -279,7 +279,7 @@ export function ThemeToggle() {
       setSystem(false)
     } else {
       setTheme("system")
-      setSystem(!system)
+      setSystem(true)
     }
   }
 
@@ -290,7 +290,7 @@ export function ThemeToggle() {
         type="checkbox"
         name="theme-toggle"
         className="peer sr-only"
-        checked={theme === "dark" || system}
+        checked={system}
         onChange={smartToggle}
         aria-label="Toggle dark mode"
       />
@@ -311,7 +311,7 @@ export function ThemeToggle() {
             />
           </>
         )}
-        <span className="sr-only">Switch to light / dark version</span>
+        <span className="sr-only">Switch to light/dark version</span>
       </label>
     </>
   )
