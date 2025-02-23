@@ -23,4 +23,11 @@ const normalizedConfig = {
   }),
 }
 
-console.log(normalizedConfig)
+const allFiles = [
+  ...normalizedConfig.files,
+  ...files.filter((file) =>
+    normalizedConfig.directories.some((dir) => file.startsWith(dir)),
+  ),
+]
+
+console.log(allFiles)
