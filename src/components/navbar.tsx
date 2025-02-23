@@ -144,7 +144,7 @@ const NavigationLinks: FC<NavigationLinksProps> = ({
             <span className="bg-border absolute bottom-14 left-0 h-px w-full" />
             <span className="bg-border absolute -top-14 left-14 h-full w-px" />
             <span className="bg-border absolute right-14 bottom-0 h-full w-px" />
-            <span className="text-foreground/50 absolute -right-8.25 bottom-48 flex rotate-270 items-center gap-x-2 text-xs">
+            <span className="text-foreground/50 absolute -right-8 bottom-48 flex rotate-270 items-center gap-x-2 text-xs">
               <RiArrowLeftLongLine className="size-3.5" /> Switch dark mode
             </span>
             <span className="absolute right-0 bottom-14 aspect-square h-14">
