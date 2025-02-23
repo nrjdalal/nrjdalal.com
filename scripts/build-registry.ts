@@ -9,6 +9,8 @@ const config = {
 const files = await getFiles()
 const aliases = await getAliases()
 
+console.log(aliases)
+
 const normalizedConfig = {
   files: normalizeAndFilter({
     paths: config.files,
@@ -23,11 +25,13 @@ const normalizedConfig = {
   }),
 }
 
-const allFiles = [
+const configFiles = [
   ...normalizedConfig.files,
   ...files.filter((file) =>
-    normalizedConfig.directories.some((dir) => file.startsWith(dir)),
+    normalizedConfig.directories.some((directory) =>
+      file.startsWith(directory),
+    ),
   ),
 ]
 
-console.log(allFiles)
+console.log(configFiles)
