@@ -1,7 +1,7 @@
 import { getAliases } from "./utils/aliases"
 import { getFiles, normalizeAndFilter } from "./utils/files"
 
-let config: { files: string[]; directories: string[] } = {
+const config = {
   files: [],
   directories: ["@/components/nui"],
 }
@@ -9,7 +9,7 @@ let config: { files: string[]; directories: string[] } = {
 const files = await getFiles()
 const aliases = await getAliases()
 
-config = {
+const normalizedConfig = {
   files: normalizeAndFilter({
     paths: config.files,
     files,
@@ -23,4 +23,4 @@ config = {
   }),
 }
 
-console.log(config)
+console.log(normalizedConfig)
