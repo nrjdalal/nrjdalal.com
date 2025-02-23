@@ -1,6 +1,6 @@
 "use client"
 
-import { ThemeToggle } from "@/components/nui/theme-toggle"
+import { ThemeToggle } from "@/components/nui/theme-provider"
 import {
   Drawer,
   DrawerContent,
