@@ -5,8 +5,8 @@ import { getAliases } from "./utils/aliases"
 import { getFiles, normalizeAndFilter } from "./utils/files"
 
 const config = {
-  files: ["src/app/layout.tsx"],
-  directories: ["@/components/nui"],
+  files: [],
+  directories: ["@/components/default"],
 }
 
 const files = await getFiles()
@@ -165,18 +165,29 @@ for (const file of configFiles) {
     .replace(/\..*$/, "")
     .replace(/\//g, "-")
 
-  const type =
-    imports.data.files[0]
-      .match(/^(block|components\/ui|components|hooks|lib)/)?.[0]
-      .replace("components/ui", "registry:ui")
-      .replace("components", "registry:component")
-      .replace("hooks", "registry:hooks")
-      .replace("lib", "registry:lib")
-      .replace("block", "registry:block") || "registry:file"
+  const getType = (filePath: string) => {
+    return (
+      filePath
+        .match(/^(block|components\/ui|components|hooks|lib)/)?.[0]
+        .replace("components/ui", "registry:ui")
+        .replace("components", "registry:component")
+        .replace("hooks", "registry:hooks")
+        .replace("lib", "registry:lib")
+        .replace("block", "registry:block") || "registry:file"
+    )
+  }
 
   console.log({
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name,
-    type,
+    type: getType(imports.data.files[0]),
+    files: imports.data.files.map((file) => {
+      return {
+        type: getType(file),
+        path: file,
+        target: file,
+        content: imports.content[file],
+      }
+    }),
   })
 }
