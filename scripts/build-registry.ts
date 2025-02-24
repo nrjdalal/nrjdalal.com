@@ -1,12 +1,88 @@
 #!/usr/bin/env node
 import fs from "node:fs"
 import path from "node:path"
-import { getAliases } from "./utils/aliases"
-import { getFiles, normalizeAndFilter } from "./utils/files"
+import { glob } from "tinyglobby"
 
 const config = {
   files: ["@/app/layout.tsx"],
   directories: ["@/components/default"],
+}
+
+const getFiles = async ({
+  patterns = ["**", ".**"],
+  ignore = [] as string[],
+} = {}) => {
+  patterns = Array.isArray(patterns) ? patterns : [patterns]
+  ignore = Array.isArray(ignore) ? ignore : [ignore]
+
+  if (fs.existsSync(".gitignore")) {
+    const gitignorePatterns: string[] = (
+      await fs.promises.readFile(".gitignore", "utf8")
+    )
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("#"))
+      .map((line) => line.replace(/^\//, ""))
+    ignore = ignore.concat(gitignorePatterns)
+  }
+
+  return await glob(patterns, {
+    ignore: ignore.filter((ig) => !patterns.includes(ig)),
+  })
+}
+
+const normalizeAndFilter = ({
+  paths = [],
+  directory = false,
+  aliases = {},
+  files = [],
+}: {
+  paths: string[]
+  directory?: boolean
+  aliases?: Record<string, string>
+  files?: string[]
+}): string[] => {
+  return paths
+    .map((path) => {
+      path = path.replace(/^\.\//, "")
+      for (const alias in aliases) {
+        if (path.startsWith(alias)) {
+          return path.replace(alias, aliases[alias])
+        }
+      }
+      return path
+    })
+    .filter((path) => {
+      if (directory) {
+        return files.some((file) => file.startsWith(path))
+      } else {
+        return files.includes(path)
+      }
+    })
+}
+
+const getAliases = async () => {
+  const isTypescript = fs.existsSync("tsconfig.json")
+
+  if (isTypescript) {
+    const tsconfig = await fs.promises.readFile("tsconfig.json", "utf8")
+    const { compilerOptions } = JSON.parse(tsconfig)
+    if (compilerOptions && compilerOptions.paths) {
+      return Object.entries(
+        compilerOptions.paths as Record<string, [string]>,
+      ).reduce(
+        (acc, [key, [value]]) => {
+          acc[key.replace(/\*$/, "")] = value
+            .replace(/^\.\//, "")
+            .replace(/\*$/, "")
+          return acc
+        },
+        {} as Record<string, string>,
+      )
+    }
+  }
+
+  return {}
 }
 
 const files = await getFiles()
@@ -124,8 +200,12 @@ const normalizeImports = ({
   }
   aliases: Record<string, string>
 }) => {
-  if (Array.isArray(imports)) {
-    return imports
+  const normalizePath = (file: string) => {
+    return file
+      .replace(/^registry\/default\/components\//, "components/default/")
+      .replace(/^registry\/default\/ui\//, "components/ui/")
+      .replace(/^registry\/default\/hooks\//, "hooks/")
+      .replace(/^registry\/default\/lib\//, "lib/")
   }
 
   const content = Object.fromEntries(
@@ -133,16 +213,20 @@ const normalizeImports = ({
       const aliasKey = Object.keys(aliases).find((alias) =>
         key.startsWith(aliases[alias]),
       )
-      return [aliasKey ? key.replace(aliases[aliasKey], "") : key, value]
+      const normalizedKey = aliasKey ? key.replace(aliases[aliasKey], "") : key
+      return [normalizePath(normalizedKey), value]
     }),
   )
 
   const files = imports.data.files.map((file: string) =>
-    Object.keys(aliases).reduce(
-      (acc, alias) => acc.replace(aliases[alias], ""),
-      file,
+    normalizePath(
+      Object.keys(aliases).reduce(
+        (acc, alias) => acc.replace(aliases[alias], ""),
+        file,
+      ),
     ),
   )
+
   return { ...imports, content, data: { ...imports.data, files } }
 }
 
@@ -155,6 +239,10 @@ for (const file of configFiles) {
   })
 
   const name = imports.data.files[0]
+    .replace(/^registry\/default\/components\//, "default/")
+    .replace(/^registry\/default\/ui\//, "components/ui/")
+    .replace(/^registry\/default\/hooks\//, "hooks/")
+    .replace(/^registry\/default\/lib\//, "lib/")
     .replace(/^block\//, "")
     .replace(/^components\/ui\//, "")
     .replace(/^components\//, "")
