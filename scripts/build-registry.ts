@@ -38,14 +38,18 @@ const configFiles = [
 ]
 
 const getImports = async (filePath: string) => {
+  const content: Record<string, string> = ({} = {})
+
   const data: { dependencies: string[]; files: string[] } = {
     dependencies: [],
     files: [],
   }
 
-  const content = await fs.promises.readFile(filePath, "utf8")
+  const fileContent = await fs.promises.readFile(filePath, "utf8")
 
-  const importStatements = content.match(
+  content[filePath] = fileContent
+
+  const importStatements = fileContent.match(
     /import\s+.*\s+from\s+['"].*['"]|import\s+['"].*['"]/g,
   )
   if (!importStatements) return []
@@ -91,15 +95,20 @@ const getImports = async (filePath: string) => {
   for (const file of uniqueFiles) {
     const importsData = await getImports(file)
     if (Array.isArray(importsData)) {
-      importsData.forEach((importFile) => uniqueFiles.add(importFile))
+      importsData.forEach((importFile) => {
+        uniqueFiles.add(importFile)
+      })
     } else {
-      importsData.files.forEach((importFile) => uniqueFiles.add(importFile))
+      content[file] = importsData.content[file]
+      importsData.data.files.forEach((importFile) =>
+        uniqueFiles.add(importFile),
+      )
     }
   }
 
   data.files = Array.from(uniqueFiles)
 
-  return data
+  return { data, content }
 }
 
 for (const file of configFiles) {
