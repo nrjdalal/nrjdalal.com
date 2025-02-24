@@ -45,8 +45,7 @@ const getImports = async (filePath: string) => {
     files: [],
   }
 
-  const fileContent = await fs.promises.readFile(filePath, "utf8")
-
+  const fileContent = content[filePath] || fs.readFileSync(filePath, "utf-8")
   content[filePath] = fileContent
 
   const importStatements = fileContent.match(
@@ -106,7 +105,7 @@ const getImports = async (filePath: string) => {
     }
   }
 
-  data.files = Array.from(uniqueFiles)
+  data.files = [filePath, ...Array.from(uniqueFiles)]
 
   return { data, content }
 }
