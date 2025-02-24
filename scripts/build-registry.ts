@@ -157,5 +157,28 @@ for (const file of configFiles) {
     }),
     aliases,
   })
-  console.log(imports)
+
+  const name = imports.data.files[0]
+    .replace(/^block\//, "")
+    .replace(/^components\/ui\//, "")
+    .replace(/^components\//, "")
+    .replace(/^hooks\//, "")
+    .replace(/^lib\//, "")
+    .replace(/\..*$/, "")
+    .replace(/\//g, "-")
+
+  const type =
+    imports.data.files[0]
+      .match(/^(block|components\/ui|components|hooks|lib)/)?.[0]
+      .replace("components/ui", "registry:ui")
+      .replace("components", "registry:component")
+      .replace("hooks", "registry:hooks")
+      .replace("lib", "registry:lib")
+      .replace("block", "registry:block") || "registry:file"
+
+  console.log({
+    $schema: "https://ui.shadcn.com/schema/registry-item.json",
+    name,
+    type,
+  })
 }
