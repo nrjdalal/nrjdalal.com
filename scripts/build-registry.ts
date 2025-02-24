@@ -36,7 +36,7 @@ const configFiles = [
 ]
 
 const getImports = async ({ filePath }: { filePath: string }) => {
-  const content: Record<string, string> = ({} = {})
+  const content: Record<string, string> = {}
 
   const data: { dependencies: string[]; files: string[] } = {
     dependencies: [],
@@ -97,16 +97,13 @@ const getImports = async ({ filePath }: { filePath: string }) => {
 
   for (const file of uniqueFiles) {
     const importsData = await getImports({ filePath: file })
-    if (Array.isArray(importsData)) {
-      importsData.forEach((importFile) => {
-        uniqueFiles.add(importFile)
-      })
-    } else {
-      content[file] = importsData.content[file]
-      importsData.data.files.forEach((importFile) =>
-        uniqueFiles.add(importFile),
-      )
-    }
+    content[file] = importsData.content[file]
+    importsData.data.files.forEach((importFile) => uniqueFiles.add(importFile))
+    importsData.data.dependencies.forEach((dependency) => {
+      if (!data.dependencies.includes(dependency)) {
+        data.dependencies.push(dependency)
+      }
+    })
   }
 
   data.files = [filePath, ...Array.from(uniqueFiles)]
@@ -183,6 +180,7 @@ for (const file of configFiles) {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name,
     type: getType(imports.data.files[0]),
+    dependencies: imports.data.dependencies,
     files: imports.data.files.map((file) => {
       return {
         type: getType(file),

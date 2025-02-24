@@ -2,6 +2,13 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "default-simple-input",
   "type": "registry:component",
+  "dependencies": [
+    "react",
+    "clsx",
+    "tailwind-merge",
+    "@radix-ui/react-label",
+    "class-variance-authority"
+  ],
   "files": [
     {
       "type": "registry:component",
