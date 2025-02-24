@@ -37,15 +37,7 @@ const configFiles = [
   ),
 ]
 
-const getImports = async ({
-  filePath,
-  files,
-  aliases,
-}: {
-  filePath: string
-  files?: string[]
-  aliases?: Record<string, string>
-}) => {
+const getImports = async ({ filePath }: { filePath: string }) => {
   const content: Record<string, string> = ({} = {})
 
   const data: { dependencies: string[]; files: string[] } = {
@@ -162,8 +154,6 @@ for (const file of configFiles) {
   const imports = normalizeImports({
     imports: await getImports({
       filePath: file,
-      files: configFiles,
-      aliases,
     }),
     aliases,
   })
