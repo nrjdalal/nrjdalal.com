@@ -177,7 +177,8 @@ for (const file of configFiles) {
     )
   }
 
-  console.log({
+  const outputPath = path.join("public", "r", `${name}.json`)
+  const outputData = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name,
     type: getType(imports.data.files[0]),
@@ -189,5 +190,12 @@ for (const file of configFiles) {
         content: imports.content[file],
       }
     }),
-  })
+  }
+
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true })
+  fs.writeFileSync(
+    outputPath,
+    JSON.stringify(outputData, null, 2) + "\n",
+    "utf-8",
+  )
 }

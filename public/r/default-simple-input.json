@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "default-simple-input",
+  "type": "registry:component",
+  "files": [
+    {
+      "type": "registry:component",
+      "path": "components/default/simple-input.tsx",
+      "target": "components/default/simple-input.tsx",
+      "content": "import { Input } from \"@/components/ui/input\"\nimport { Label } from \"@/components/ui/label\"\nimport { useId } from \"react\"\n\nexport default function Component() {\n  const id = useId()\n  return (\n    <div className=\"*:not-first:mt-2\">\n      <Label htmlFor={id}>Simple input</Label>\n      <Input id={id} placeholder=\"Email\" type=\"email\" />\n    </div>\n  )\n}\n"
+    },
+    {
+      "type": "registry:ui",
+      "path": "components/ui/input-otp.tsx",
+      "target": "components/ui/input-otp.tsx",
+      "content": "\"use client\"\n\nimport { cn } from \"@/lib/utils\"\nimport { OTPInput, OTPInputContext } from \"input-otp\"\nimport { Minus } from \"lucide-react\"\nimport * as React from \"react\"\n\nconst InputOTP = React.forwardRef<\n  React.ElementRef<typeof OTPInput>,\n  React.ComponentPropsWithoutRef<typeof OTPInput>\n>(({ className, containerClassName, ...props }, ref) => (\n  <OTPInput\n    ref={ref}\n    containerClassName={cn(\n      \"flex items-center gap-2 has-disabled:opacity-50\",\n      containerClassName,\n    )}\n    className={cn(\"disabled:cursor-not-allowed\", className)}\n    {...props}\n  />\n))\nInputOTP.displayName = \"InputOTP\"\n\nconst InputOTPGroup = React.forwardRef<\n  React.ElementRef<\"div\">,\n  React.ComponentPropsWithoutRef<\"div\">\n>(({ className, ...props }, ref) => (\n  <div ref={ref} className={cn(\"flex items-center\", className)} {...props} />\n))\nInputOTPGroup.displayName = \"InputOTPGroup\"\n\nconst InputOTPSlot = React.forwardRef<\n  React.ElementRef<\"div\">,\n  React.ComponentPropsWithoutRef<\"div\"> & { index: number }\n>(({ index, className, ...props }, ref) => {\n  const inputOTPContext = React.useContext(OTPInputContext)\n  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]\n\n  return (\n    <div\n      ref={ref}\n      className={cn(\n        \"border-input relative flex h-9 w-9 items-center justify-center border-y border-r text-sm shadow-xs transition-all first:rounded-l-md first:border-l last:rounded-r-md\",\n        isActive && \"ring-ring z-10 ring-1\",\n        className,\n      )}\n      {...props}\n    >\n      {char}\n      {hasFakeCaret && (\n        <div className=\"pointer-events-none absolute inset-0 flex items-center justify-center\">\n          <div className=\"animate-caret-blink bg-foreground h-4 w-px duration-1000\" />\n        </div>\n      )}\n    </div>\n  )\n})\nInputOTPSlot.displayName = \"InputOTPSlot\"\n\nconst InputOTPSeparator = React.forwardRef<\n  React.ElementRef<\"div\">,\n  React.ComponentPropsWithoutRef<\"div\">\n>(({ ...props }, ref) => (\n  <div ref={ref} role=\"separator\" {...props}>\n    <Minus />\n  </div>\n))\nInputOTPSeparator.displayName = \"InputOTPSeparator\"\n\nexport { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }\n"
+    },
+    {
+      "type": "registry:ui",
+      "path": "components/ui/label.tsx",
+      "target": "components/ui/label.tsx",
+      "content": "\"use client\"\n\nimport { cn } from \"@/lib/utils\"\nimport * as LabelPrimitive from \"@radix-ui/react-label\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport * as React from \"react\"\n\nconst labelVariants = cva(\n  \"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n)\n\nconst Label = React.forwardRef<\n  React.ElementRef<typeof LabelPrimitive.Root>,\n  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &\n    VariantProps<typeof labelVariants>\n>(({ className, ...props }, ref) => (\n  <LabelPrimitive.Root\n    ref={ref}\n    className={cn(labelVariants(), className)}\n    {...props}\n  />\n))\nLabel.displayName = LabelPrimitive.Root.displayName\n\nexport { Label }\n"
+    },
+    {
+      "type": "registry:lib",
+      "path": "lib/utils.ts",
+      "target": "lib/utils.ts",
+      "content": "import { clsx, type ClassValue } from \"clsx\"\nimport { twMerge } from \"tailwind-merge\"\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs))\n}\n"
+    }
+  ]
+}
