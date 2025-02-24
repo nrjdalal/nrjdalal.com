@@ -5,7 +5,7 @@ import { getAliases } from "./utils/aliases"
 import { getFiles, normalizeAndFilter } from "./utils/files"
 
 const config = {
-  files: [],
+  files: ["@/app/layout.tsx"],
   directories: ["@/components/default"],
 }
 
