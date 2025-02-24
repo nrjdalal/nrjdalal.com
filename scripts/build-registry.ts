@@ -37,7 +37,7 @@ const configFiles = [
   ),
 ]
 
-const getImports = async (filePath: string) => {
+const getImports = async ({ filePath }: { filePath: string }) => {
   const content: Record<string, string> = ({} = {})
 
   const data: { dependencies: string[]; files: string[] } = {
@@ -51,7 +51,12 @@ const getImports = async (filePath: string) => {
   const importStatements = fileContent.match(
     /import\s+.*\s+from\s+['"].*['"]|import\s+['"].*['"]/g,
   )
-  if (!importStatements) return []
+
+  if (!importStatements) {
+    data.files.push(filePath)
+    content[filePath] = fileContent
+    return { data, content }
+  }
 
   const importFroms = importStatements
     .map((statement) => {
@@ -92,7 +97,7 @@ const getImports = async (filePath: string) => {
   const uniqueFiles = new Set(data.files)
 
   for (const file of uniqueFiles) {
-    const importsData = await getImports(file)
+    const importsData = await getImports({ filePath: file })
     if (Array.isArray(importsData)) {
       importsData.forEach((importFile) => {
         uniqueFiles.add(importFile)
@@ -110,7 +115,47 @@ const getImports = async (filePath: string) => {
   return { data, content }
 }
 
+const normalizeImports = ({
+  imports,
+  aliases,
+}: {
+  imports: {
+    content: Record<string, string>
+    data: {
+      files: string[]
+      dependencies: string[]
+    }
+  }
+  aliases: Record<string, string>
+}) => {
+  if (Array.isArray(imports)) {
+    return imports
+  }
+
+  const content = Object.fromEntries(
+    Object.entries(imports.content).map(([key, value]) => {
+      const aliasKey = Object.keys(aliases).find((alias) =>
+        key.startsWith(aliases[alias]),
+      )
+      return [aliasKey ? key.replace(aliases[aliasKey], "") : key, value]
+    }),
+  )
+
+  const files = imports.data.files.map((file: string) =>
+    Object.keys(aliases).reduce(
+      (acc, alias) => acc.replace(aliases[alias], ""),
+      file,
+    ),
+  )
+  return { ...imports, content, data: { ...imports.data, files } }
+}
+
 for (const file of configFiles) {
-  const imports = await getImports(file)
+  const imports = normalizeImports({
+    imports: await getImports({
+      filePath: file,
+    }),
+    aliases,
+  })
   console.log(imports)
 }
