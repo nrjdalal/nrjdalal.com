@@ -11,9 +11,9 @@ export const getAliases = async () => {
         compilerOptions.paths as Record<string, [string]>,
       ).reduce(
         (acc, [key, [value]]) => {
-          acc[key.replace(/\/\*$/, "")] = value
+          acc[key.replace(/\*$/, "")] = value
             .replace(/^\.\//, "")
-            .replace(/\/\*$/, "")
+            .replace(/\*$/, "")
           return acc
         },
         {} as Record<string, string>,
