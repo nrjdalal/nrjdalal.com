@@ -12,8 +12,6 @@ const config = {
 const files = await getFiles()
 const aliases = await getAliases()
 
-console.log(aliases)
-
 const normalizedConfig = {
   files: normalizeAndFilter({
     paths: config.files,
