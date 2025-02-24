@@ -72,7 +72,8 @@ const getImports = async ({ filePath }: { filePath: string }) => {
         aliases[aliasKey],
         importFrom.slice(aliasKey.length),
       )
-      resolvedPath = files.find((file) => file.startsWith(resolvedPath)) || ""
+      resolvedPath =
+        files.find((file) => file.startsWith(resolvedPath + ".")) || ""
       if (!data.files.includes(resolvedPath)) {
         data.files.push(resolvedPath)
       }
