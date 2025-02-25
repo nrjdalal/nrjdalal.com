@@ -276,9 +276,9 @@ for (const file of configFiles) {
     files: imports.data.files.map((file) => {
       return {
         type: getType(file),
-        path: imports.data.orignal[imports.data.files.indexOf(file)],
         target: file,
         content: imports.content[file],
+        path: imports.data.orignal[imports.data.files.indexOf(file)],
       }
     }),
   }
