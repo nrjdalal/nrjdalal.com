@@ -238,7 +238,7 @@ const normalizeImports = ({
       return [
         key,
         value
-          .replace(/import\s+['"](.*)['"]/, (match, p1) => {
+          .replace(/import\s+[\s\S]*?['"](.*)['"]/, (match, p1) => {
             const aliasKey = Object.keys(aliases).find((alias) =>
               p1.startsWith(alias),
             )
