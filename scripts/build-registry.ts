@@ -4,8 +4,8 @@ import path from "node:path"
 import { glob } from "tinyglobby"
 
 const config = {
-  files: ["@/app/layout.tsx"],
-  directories: ["@/components/default"],
+  files: ["@/app/globals.css", "scripts/build-registry.ts"],
+  directories: ["@/components/nui"],
 }
 
 const getFiles = async ({
