@@ -120,10 +120,11 @@ const getImports = async ({ filePath }: { filePath: string }) => {
   }
 
   const fileContent = content[filePath] || fs.readFileSync(filePath, "utf-8")
+
   content[filePath] = fileContent
 
   const importStatements = fileContent.match(
-    /import\s+.*\s+from\s+['"].*['"]|import\s+['"].*['"]/g,
+    /import\s+[\s\S]*?\s+from\s+['"].*['"]|import\s+['"].*['"]/g,
   )
 
   if (!importStatements) {
