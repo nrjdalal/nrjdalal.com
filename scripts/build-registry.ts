@@ -276,7 +276,7 @@ for (const file of configFiles) {
     .replace(/^registry\/[^\/]+\/ui\//, "components/ui/")
     .replace(/^registry\/[^\/]+\/hooks\//, "hooks/")
     .replace(/^registry\/[^\/]+\/lib\//, "lib/")
-    .replace(/^block\//, "")
+    .replace(/^blocks\//, "")
     .replace(/^components\/ui\//, "")
     .replace(/^components\//, "")
     .replace(/^hooks\//, "")
@@ -290,9 +290,9 @@ for (const file of configFiles) {
         .match(/^(block|components\/ui|components|hooks|lib)/)?.[0]
         .replace("components/ui", "registry:ui")
         .replace("components", "registry:component")
-        .replace("hooks", "registry:hooks")
+        .replace("hooks", "registry:hook")
         .replace("lib", "registry:lib")
-        .replace("block", "registry:block") || "registry:file"
+        .replace("blocks", "registry:block") || "registry:file"
     )
   }
 
