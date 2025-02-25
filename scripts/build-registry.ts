@@ -227,10 +227,13 @@ const normalizeImports = ({
     ),
   )
 
+  const dependencies = imports.data.dependencies.filter(
+    (dep) => !dep.startsWith("node:"),
+  )
+
   return {
-    ...imports,
     content,
-    data: { ...imports.data, files: target, orignal: imports.data.files },
+    data: { dependencies, files: target, orignal: imports.data.files },
   }
 }
 
