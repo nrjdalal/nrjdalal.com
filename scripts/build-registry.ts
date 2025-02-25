@@ -185,10 +185,10 @@ const normalizeImports = ({
 }) => {
   const normalizePath = (file: string) => {
     return file
-      .replace(/^registry\/default\/components\//, "components/default/")
-      .replace(/^registry\/default\/ui\//, "components/ui/")
-      .replace(/^registry\/default\/hooks\//, "hooks/")
-      .replace(/^registry\/default\/lib\//, "lib/");
+      .replace(/^registry\/([^\/]+)\/components\//, "components/$1/")
+      .replace(/^registry\/[^\/]+\/ui\//, "components/ui/")
+      .replace(/^registry\/[^\/]+\/hooks\//, "hooks/")
+      .replace(/^registry\/[^\/]+\/lib\//, "lib/");
   };
 
   const content = Object.fromEntries(
@@ -219,10 +219,10 @@ const normalizeImports = ({
             }
             return match;
           })
-          .replace(/@\/registry\/default\/ui\//g, "@/components/ui/")
-          .replace(/@\/registry\/default\/components\//g, "@/components/default/")
-          .replace(/@\/registry\/default\/hooks\//g, "@/hooks/")
-          .replace(/@\/registry\/default\/lib\//g, "@/lib/"),
+          .replace(/@\/registry\/([^\/]+)\/components\//g, "@/components/$1/")
+          .replace(/@\/registry\/[^\/]+\/ui\//g, "@/components/ui/")
+          .replace(/@\/registry\/[^\/]+\/hooks\//g, "@/hooks/")
+          .replace(/@\/registry\/[^\/]+\/lib\//g, "@/lib/"),
       ];
     }),
   );
@@ -242,10 +242,10 @@ for (const file of configFiles) {
   });
 
   const name = imports.data.files[0]
-    .replace(/^registry\/default\/components\//, "default/")
-    .replace(/^registry\/default\/ui\//, "components/ui/")
-    .replace(/^registry\/default\/hooks\//, "hooks/")
-    .replace(/^registry\/default\/lib\//, "lib/")
+    .replace(/^registry\/([^\/]+)\/components\//, "components/$1/")
+    .replace(/^registry\/[^\/]+\/ui\//, "components/ui/")
+    .replace(/^registry\/[^\/]+\/hooks\//, "hooks/")
+    .replace(/^registry\/[^\/]+\/lib\//, "lib/")
     .replace(/^block\//, "")
     .replace(/^components\/ui\//, "")
     .replace(/^components\//, "")
