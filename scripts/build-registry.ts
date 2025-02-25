@@ -218,7 +218,7 @@ const normalizeImports = ({
     }),
   )
 
-  const files = imports.data.files.map((file: string) =>
+  const target = imports.data.files.map((file: string) =>
     normalizePath(
       Object.keys(aliases).reduce(
         (acc, alias) => acc.replace(aliases[alias], ""),
@@ -227,7 +227,11 @@ const normalizeImports = ({
     ),
   )
 
-  return { ...imports, content, data: { ...imports.data, files } }
+  return {
+    ...imports,
+    content,
+    data: { ...imports.data, files: target, orignal: imports.data.files },
+  }
 }
 
 for (const file of configFiles) {
@@ -272,7 +276,7 @@ for (const file of configFiles) {
     files: imports.data.files.map((file) => {
       return {
         type: getType(file),
-        path: file,
+        path: imports.data.orignal[imports.data.files.indexOf(file)],
         target: file,
         content: imports.content[file],
       }
