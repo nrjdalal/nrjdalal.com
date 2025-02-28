@@ -41,4 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # custom
+/public/r
 /src/content

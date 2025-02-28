@@ -81,7 +81,9 @@
     {
       "name": "aspect-ratio",
       "type": "registry:ui",
-      "dependencies": ["@radix-ui/react-aspect-ratio"],
+      "dependencies": [
+        "@radix-ui/react-aspect-ratio"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -214,7 +216,11 @@
     {
       "name": "card",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -261,7 +267,12 @@
     {
       "name": "chart",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "recharts", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "recharts",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -301,7 +312,9 @@
     {
       "name": "collapsible",
       "type": "registry:ui",
-      "dependencies": ["@radix-ui/react-collapsible"],
+      "dependencies": [
+        "@radix-ui/react-collapsible"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -388,7 +401,12 @@
     {
       "name": "drawer",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "tailwind-merge", "vaul"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "tailwind-merge",
+        "vaul"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -479,7 +497,11 @@
     {
       "name": "input",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -541,7 +563,9 @@
     {
       "name": "mdx-content",
       "type": "registry:component",
-      "dependencies": ["react"],
+      "dependencies": [
+        "react"
+      ],
       "files": [
         {
           "type": "registry:component",
@@ -943,7 +967,10 @@
     {
       "name": "skeleton",
       "type": "registry:ui",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -982,7 +1009,10 @@
     {
       "name": "sonner",
       "type": "registry:ui",
-      "dependencies": ["next-themes", "sonner"],
+      "dependencies": [
+        "next-themes",
+        "sonner"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -1016,7 +1046,11 @@
     {
       "name": "table",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
@@ -1055,7 +1089,11 @@
     {
       "name": "textarea",
       "type": "registry:ui",
-      "dependencies": ["clsx", "react", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "react",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "type": "registry:ui",
