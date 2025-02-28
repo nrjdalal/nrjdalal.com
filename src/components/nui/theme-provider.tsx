@@ -1,24 +1,26 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { RiContrast2Fill, RiMoonFill, RiSunFill } from "@remixicon/react"
+import { RiMoonFill, RiSunFill } from "@remixicon/react"
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
-import { useState } from "react"
 
 export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
-  const [system, setSystem] = useState(false)
 
   const smartToggle = () => {
+    /* The smart toggle by @nrjdalal */
+    const prefersDarkScheme = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches
     if (theme === "system") {
-      const prefersDarkScheme = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches
       setTheme(prefersDarkScheme ? "light" : "dark")
-      setSystem(false)
+    } else if (
+      (theme === "light" && !prefersDarkScheme) ||
+      (theme === "dark" && prefersDarkScheme)
+    ) {
+      setTheme(theme === "light" ? "dark" : "light")
     } else {
       setTheme("system")
-      setSystem(true)
     }
   }
 
@@ -29,14 +31,8 @@ export const ThemeToggle = () => {
       onClick={smartToggle}
       aria-label="Switch between system/light/dark version"
     >
-      {system ? (
-        <RiContrast2Fill aria-hidden="true" />
-      ) : (
-        <>
-          <RiSunFill className="dark:hidden" aria-hidden="true" />
-          <RiMoonFill className="hidden dark:block" aria-hidden="true" />
-        </>
-      )}
+      <RiSunFill className="dark:hidden" aria-hidden="true" />
+      <RiMoonFill className="hidden dark:block" aria-hidden="true" />
     </Button>
   )
 }

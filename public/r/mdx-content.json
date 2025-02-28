@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mdx-content",
+  "type": "registry:component",
+  "dependencies": ["react"],
+  "files": [
+    {
+      "type": "registry:component",
+      "target": "components/mdx-content.tsx",
+      "content": "import * as runtime from \"react/jsx-runtime\"\n\nconst sharedComponents = {}\n\nexport const MDXContent = ({\n  content,\n  components,\n}: {\n  content: string\n  components?: Record<string, React.ComponentType>\n}) => {\n  const Component = new Function(content)({ ...runtime }).default\n  return <Component components={{ ...sharedComponents, ...components }} />\n}\n",
+      "path": "src/components/mdx-content.tsx"
+    }
+  ]
+}
