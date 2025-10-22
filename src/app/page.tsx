@@ -8,23 +8,23 @@ export default function Page() {
       <h1 className="sr-only">Neeraj Dalal personal site</h1>
       <p>UI, Tools and much more / Coming Soon</p>
       <Link
-        href="https://github.com/nrjdalal"
+        href="https://nrjdalal.com"
         target="_blank"
-        aria-label="Visit the GitHub repository for this user"
-        className="mt-4 flex gap-2"
+        aria-label="Site is in making — Open the previous site"
+        className="mt-4 flex gap-2 cursor-pointer"
       >
-        <Button className="[&_svg]:size-5" aria-label="My Github">
-          View Source on GitHub <RiGithubFill aria-hidden="true" />
+        <Button aria-label="Site is in making — Open the previous site" variant="secondary">
+          Site is in making — Open the previous site
         </Button>
       </Link>
       <Link
-        href="https://nrjdalal.com"
+        href="https://github.com/nrjdalal"
         target="_blank"
-        aria-label="Visit the previous version of the site"
-        className="mt-2 flex gap-2"
+        aria-label="nrjdalal's GitHub"
+        className="mt-4 flex gap-2 cursor-pointer"
       >
-        <Button aria-label="Open the previous site" variant="secondary">
-          Site is in making — Open the previous site
+        <Button className="[&_svg]:size-5" aria-label="nrjdalal's GitHub">
+          nrjdalal's GitHub <RiGithubFill aria-hidden="true" />
         </Button>
       </Link>
     </main>
