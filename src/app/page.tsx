@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { RiGithubFill } from "@remixicon/react"
+import { RiExternalLinkFill, RiGithubFill } from "@remixicon/react"
 import Link from "next/link"
 
 export default function Page() {
@@ -11,20 +11,25 @@ export default function Page() {
         href="https://nrjdalal.com"
         target="_blank"
         aria-label="Site is in making — Open the previous site"
-        className="mt-4 flex gap-2 cursor-pointer"
+        className="mt-4 flex cursor-pointer gap-2"
       >
-        <Button aria-label="Site is in making — Open the previous site" variant="secondary">
-          Site is in making — Open the previous site
+        <Button aria-label="Site is in making — Open the previous site">
+          Site is in making — Open the previous site{" "}
+          <RiExternalLinkFill aria-hidden="true" />
         </Button>
       </Link>
       <Link
         href="https://github.com/nrjdalal"
         target="_blank"
         aria-label="nrjdalal's GitHub"
-        className="mt-4 flex gap-2 cursor-pointer"
+        className="mt-4 flex cursor-pointer gap-2"
       >
-        <Button className="[&_svg]:size-5" aria-label="nrjdalal's GitHub">
-          nrjdalal's GitHub <RiGithubFill aria-hidden="true" />
+        <Button
+          className="[&_svg]:size-5"
+          aria-label="nrjdalal's GitHub"
+          variant="secondary"
+        >
+          nrjdalal&apos;s GitHub <RiGithubFill aria-hidden="true" />
         </Button>
       </Link>
     </main>
